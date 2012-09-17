@@ -1,6 +1,7 @@
-<!DOCTYPE html>
-<html>
-<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name = "description" content = "Online tool to create code for polyline and polygon to Google Maps v3 (version 3)"/>
@@ -16,17 +17,12 @@
     //  OpenStreetMap (OSM): http://www.openstreetmap.org/
     //  OSM licence, Creative Commons: http://creativecommons.org/licenses/by-sa/2.0/legalcode
 
-    function gob(e)
-    {
-        if(typeof(e)=='object')return(e);
-        if(document.getElementById)
-            return(document.getElementById(e));
-        return(eval(e))
-    }
+    function gob(e){if(typeof(e)=='object')return(e);if(document.getElementById)return(document.getElementById(e));return(eval(e))}
     var map;
     var polyShape;
     var markerShape;
-
+    //var oldDirMarkers = [];
+    //var tmpPolyLine;
     var drawnShapes = [];
     var holeShapes = [];
     var startMarker;
@@ -34,7 +30,8 @@
     var tinyMarker;
     var markers = [];
     var midmarkers = [];
-
+    //var markerlistener1;
+    //var markerlistener2;
     var rectangle;
     var circle;
     var southWest;
@@ -45,9 +42,10 @@
     var startpoint;
     var adder = 0;
     var dirpointstart = null;
+    //var dirpointend = 0;
     var dirline;
     var waypts = [];
-
+    //var waypots = [];
     var polyPoints = [];
     var pointsArray = [];
     var markersArray = [];
@@ -61,14 +59,14 @@
     var plmcur = 0;
     var lcur = 0;
     var pcur = 0;
-
+    //var rcur = 0;
     var ccur = 0;
     var mcur = 0;
     var outerPoints = [];
     var holePolyArray = [];
     var outerShape;
     var anotherhole = false;
-
+    //var it;
     var outerArray = [];
     var innerArray = [];
     var innerArrays = [];
@@ -76,7 +74,7 @@
     var innerArrayKml = [];
     var innerArraysKml = [];
     var placemarks = [];
-
+    //var mylistener;
     var editing = false;
     var notext = false;
     var textsignal = 0;
@@ -88,13 +86,13 @@
     var docudesc = "Content";
     var polylinestyles = [];
     var polygonstyles = [];
-
+    //var rectanglestyles = [];
     var circlestyles = [];
     var markerstyles = [];
     var geocoder; // = new google.maps.Geocoder();
-
+    //var startLocation;
     var endLocation;
-
+    //var dircount;
     var dircountstart;
     var firstdirclick = 0;
     var dirmarknum = 1;
@@ -103,7 +101,8 @@
     var directionsYes = 0;
     var destinations = [];
     var removedirectionleg = 0;
-
+    //var currentDirections = null;
+    //var oldpoint = null;
     var prevpoint;
     var prevnumber;
     var copyrightNode;
@@ -114,33 +113,42 @@
         strokeWeight: 2
     });
     var tinyIcon = new google.maps.MarkerImage(
-            "assets/icons/marker_20_red.png",
+            'icons/marker_20_red.png',
             new google.maps.Size(12,20),
             new google.maps.Point(0,0),
             new google.maps.Point(6,16)
     );
-
+    /*var tinyShadow = new google.maps.MarkerImage(
+     'icons/marker_20_shadow.png',
+     new google.maps.Size(22,20),
+     new google.maps.Point(6,20),
+     new google.maps.Point(5,1)
+     );*/
     var imageNormal = new google.maps.MarkerImage(
-            "assets/images/square.png",
+            "images/square.png",
             new google.maps.Size(11, 11),
             new google.maps.Point(0, 0),
             new google.maps.Point(6, 6)
     );
     var imageHover = new google.maps.MarkerImage(
-            "assets/images/square_over.png",
+            "images/square_over.png",
             new google.maps.Size(11, 11),
             new google.maps.Point(0, 0),
             new google.maps.Point(6, 6)
     );
     var imageNormalMidpoint = new google.maps.MarkerImage(
-            "assets/images/square_transparent.png",
+            "images/square_transparent.png",
             new google.maps.Size(11, 11),
             new google.maps.Point(0, 0),
             new google.maps.Point(6, 6)
     );
-
-    function polystyle()
-    {
+    /*var imageHoverMidpoint = new google.maps.MarkerImage(
+     "square_transparent_over.png",
+     new google.maps.Size(11, 11),
+     new google.maps.Point(0, 0),
+     new google.maps.Point(6, 6)
+     );*/
+    function polystyle() {
         this.name = "Lump";
         this.kmlcolor = "CD0000FF";
         this.kmlfill = "9AFF0000";
@@ -157,8 +165,7 @@
         this.width = 3;
         this.lineopac = 1;
     }
-    function circstyle()
-    {
+    function circstyle() {
         this.name = "Circ";
         this.color = "#FF0000";
         this.fill = "#0000FF";
@@ -166,13 +173,11 @@
         this.lineopac = 0.8;
         this.fillopac = 0.6;
     }
-    function markerstyleobject()
-    {
+    function markerstyleobject() {
         this.name = "markerstyle";
         this.icon = "http://maps.google.com/intl/en_us/mapfiles/ms/micons/red-dot.png";
     }
-    function placemarkobject()
-    {
+    function placemarkobject() {
         this.name = "NAME";
         this.desc = "YES";
         this.style = "Path";
@@ -219,6 +224,13 @@
             strokeWeight: polylinestyles[lcur].width};
         polyShape = new google.maps.Polyline(polyOptions);
         polyShape.setMap(map);
+        /*var tmpPolyOptions = {
+         strokeColor: polylinestyles[lcur].color,
+         strokeOpacity: polylinestyles[lcur].lineopac,
+         strokeWeight: polylinestyles[lcur].width
+         };
+         tmpPolyLine = new google.maps.Polyline(tmpPolyOptions);
+         tmpPolyLine.setMap(map);*/
     }
 
     function preparePolygon(){
@@ -258,10 +270,9 @@
             icon: markerstyles[mcur].icon
         });
     }
-    function initmap()
-    {
+    function initmap(){
         geocoder = new google.maps.Geocoder();
-        var latlng = new google.maps.LatLng(37.4106, -122.0596);
+        var latlng = new google.maps.LatLng(59.914063, 10.737874);//(45.0,7.0);//45.074723, 7.656433
         var mapTypeIds = [];
         for(var type in google.maps.MapTypeId) {
             mapTypeIds.push(google.maps.MapTypeId[type]);
@@ -273,22 +284,21 @@
         copyrightNode.style.fontFamily = 'Arial, sans-serif';
         copyrightNode.style.margin = '0 2px 2px 0';
         copyrightNode.style.whiteSpace = 'nowrap';
-
+        //copyrightNode.index = 0;
         var myOptions = {
-            zoom: 6,
+            zoom: 7,
             center: latlng,
             draggableCursor: 'default',
             draggingCursor: 'pointer',
             scaleControl: true,
             mapTypeControl: true,
             mapTypeControlOptions: {mapTypeIds: mapTypeIds},
-
+            //mapTypeControlOptions:{style: google.maps.MapTypeControlStyle.DROPDOWN_MENU},
             mapTypeId: google.maps.MapTypeId.ROADMAP,
             styles: [{featureType: 'poi', stylers: [{visibility: 'off'}]}],
             streetViewControl: false};
-
-            map = new google.maps.Map(gob('map_canvas'),myOptions);
-            map.mapTypes.set("OSM", new google.maps.ImageMapType({
+        map = new google.maps.Map(gob('map_canvas'),myOptions);
+        map.mapTypes.set("OSM", new google.maps.ImageMapType({
             getTileUrl: function(coord, zoom) {
                 return "http://tile.openstreetmap.org/" + zoom + "/" + coord.x + "/" + coord.y + ".png";
             },
@@ -299,6 +309,8 @@
         google.maps.event.addListener(map, 'maptypeid_changed', updateCopyrights);
         map.controls[google.maps.ControlPosition.BOTTOM_RIGHT].push(copyrightNode);
 
+        //var myStyle = [{featureType: 'poi', stylers: [{visibility: 'off'}]}];
+        //map.setOptions({styles: myStyle}); // styles and stylers are arrays
         polyPoints = new google.maps.MVCArray(); // collects coordinates
         tmpPolyLine.setMap(map);
         createplacemarkobject();
@@ -394,7 +406,8 @@
         google.maps.event.addListener(startMarker, 'dragend', drawRectangle);
         google.maps.event.addListener(nemarker, 'dragend', drawRectangle);
         startMarker.setDraggable(true);
-
+        //startMarker.setAnimation(null);
+        startMarker.setTitle("Draggable");
         startMarker.setOptions({raiseOnDrag: false});
         polyShape.setMap(null); // remove the Polyline that has collected the points
         polyPoints = [];
@@ -417,7 +430,10 @@
         polyPoints = [];
         pointsArray = [];
         pointsArrayKml = [];
-
+        /*polyPoints.push(southWest);
+         polyPoints.push(northWest);
+         polyPoints.push(northEast);
+         polyPoints.push(southEast);*/
         var stringtobesaved = southWest.lng().toFixed(6)+','+southWest.lat().toFixed(6);
         pointsArrayKml.push(stringtobesaved);
         stringtobesaved = southWest.lng().toFixed(6)+','+northEast.lat().toFixed(6);
@@ -581,7 +597,9 @@
             polyPoints = [];
             pointsArray = [];
             pointsArrayKml = [];
-
+            /*if(firstdirclick > 2) {
+             result.overview_path.shift();
+             }*/
             for(var i = 0; i < result.overview_path.length; i++) {
                 polyPoints.push(result.overview_path[i]);
                 pointsArray.push(result.overview_path[i].lat().toFixed(6) + ',' + result.overview_path[i].lng().toFixed(6));
@@ -1519,7 +1537,10 @@
                     newpos.lat() - (0.5 * (newpos.lat() - prevpos.lat())),
                     newpos.lng() - (0.5 * (newpos.lng() - prevpos.lng()))
             ));
+            //prevpos = null;
+            //newpos = null;
         }
+        //index = null;
     }
     function showKML() {
         if(codeID != 1) {
@@ -2452,14 +2473,14 @@
     #buttonrow {
         position: absolute;
         top: 50px;
-        left: 710px;
+        left: 540px;
         width: 505px;
         height: 80px;
     }
     #presenter {
         position: absolute;
         top: 160px;
-        left: 710px;
+        left: 540px;
         width: 523px;
         height: 413px;
         border: 2px solid #ccc;
@@ -2476,8 +2497,8 @@
         position: absolute;
         top: 50px;
         left: 0px;
-        width: 700px;
-        height: 80%;
+        width: 530px;
+        height: 530px;
         background-color: #ffffff;
     }
     #polygonstuff {
