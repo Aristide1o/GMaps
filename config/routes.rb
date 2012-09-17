@@ -1,4 +1,6 @@
 GMaps::Application.routes.draw do
+  get "draw_shape/show"
+
   get "map/show"
   root :to => 'map#show'
 
