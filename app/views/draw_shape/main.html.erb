@@ -691,22 +691,6 @@
             map: map,
             icon: image
         });
-        /*var shadow = new google.maps.MarkerImage('http://maps.google.com/intl/en_us/mapfiles/ms/micons/msmarker.shadow.png',
-         new google.maps.Size(37,32),
-         new google.maps.Point(16,0),
-         new google.maps.Point(0,32));
-         var title = "#" + markers.length;
-         var id = plmcur;
-         placemarks[plmcur].point = point;
-         placemarks[plmcur].coord = point.lng().toFixed(6) + ', ' + point.lat().toFixed(6);*/
-        /*var marker = new google.maps.Marker({
-         position: point,
-         map: map,
-         draggable: true,
-         icon: image,
-         shadow: shadow});*/
-        //marker.setTitle(title);
-        //markers.push(marker);
     }
 
     function setTool(){
@@ -916,32 +900,6 @@
                 if(placemarks[plmcur].poly == "pgh") {
                     outerArrayKml = placemarks[plmcur].kmlcode;
                     innerArraysKml = placemarks[plmcur].kmlholecode;
-                    /*var polly = polyShape.getPaths();
-                     polyPoints = polly.getAt(0);
-                     var points = polly.getAt(0);
-                     //alert(point.lng().toFixed(6));
-                     for(var i = 0; i<points.length-1; i++) {
-                     outerArray.push(points.getAt(i).lat().toFixed(6) + ',' + points.getAt(i).lng().toFixed(6));
-                     outerArrayKml.push(points.getAt(i).lng().toFixed(6) + ',' + points.getAt(i).lat().toFixed(6));
-                     }
-                     for(i = 1; i<polly.length; i++) {
-                     points = polly.getAt(i);
-                     if(i == polly.length-1) {
-                     for(var j = 0; j<points.length; j++) {
-                     innerArray.push(points.getAt(j).lat().toFixed(6) + ',' + points.getAt(j).lng().toFixed(6));
-                     innerArrayKml.push(points.getAt(j).lng().toFixed(6) + ',' + points.getAt(j).lat().toFixed(6));
-                     }
-                     }else{
-                     for(var j = 0; j<points.length-1; j++) {
-                     innerArray.push(points.getAt(j).lat().toFixed(6) + ',' + points.getAt(j).lng().toFixed(6));
-                     innerArrayKml.push(points.getAt(j).lng().toFixed(6) + ',' + points.getAt(j).lat().toFixed(6));
-                     }
-                     }
-                     innerArrays.push(innerArray);
-                     innerArraysKml.push(innerArrayKml);
-                     innerArray = [];
-                     innerArrayKml = [];
-                     }*/
                     toolID = gob('toolchoice').value = 2;
                     pcur = placemarks[plmcur].stylecur;
                     if(codeID == 1) logCode3();
@@ -1078,10 +1036,6 @@
         }
         if(toolID == 6){
             directionsYes = 1;
-            /*if(dirline != null) {
-             placemarks[plmcur].style = placemarks[dirline].style;
-             placemarks[plmcur].stylecur = placemarks[dirline].stylecur;
-             }else{*/
             placemarks[plmcur].style = polylinestyles[polylinestyles.length-1].name;
             placemarks[plmcur].stylecur = polylinestyles.length-1;
             //}
@@ -1136,9 +1090,11 @@
         }
         if(polyPoints.length === 0) nextshape();
     }
+
     function counter(num){
         return adder = adder + num;
     }
+
     // Called from link 'Hole' in div 'polygonstuff'
     function holecreator(){
         var holestep = counter(1); // adder is increased here
@@ -1203,6 +1159,7 @@
             if(codeID == 2) logCode5();
         }
     }
+
     function drawpolywithhole() {
         if(holeShapes.length > 0) {
             for(var i = 0; i < holeShapes.length; i++) {
@@ -1230,6 +1187,7 @@
         startMarker.setTitle("Polygon with hole");
         placemarks[plmcur].point = outerPoints.getAt(0);
     }
+
     // Called from button 'Next hole' in div 'polygonstuff'
     function nexthole() {
         if(gob('stepdiv').innerHTML != "Finished") {
@@ -1241,6 +1199,7 @@
             }
         }
     }
+
     function stopediting(){
         editing = false;
         gob('EditButton').value = 'Edit lines';
@@ -1302,6 +1261,7 @@
             //setstartMarker(polyPoints.getAt(0));
         }
     }
+
     // the "Edit lines" button has been pressed
     function editlines(){
         if(editing == true){
@@ -1331,6 +1291,7 @@
             gob('EditButton').value = 'Stop edit';
         }
     }
+
     function regret(){
         if(polyPoints.length == 0) return;
         for(var i = 0; i < markers.length; i++) {
@@ -1345,6 +1306,7 @@
         stopediting();
         editlines();
     }
+
     // Called from editlines and listener set in setmidmarkers
     function setmarkers(point) {
         var marker = new google.maps.Marker({
@@ -1398,6 +1360,7 @@
         });
         return marker;
     }
+
     // Called from editlines and listener set in this function
     function setmidmarkers(point,prevpoint) {
         //var prevpoint = markers[markers.length-2].getPosition();
@@ -1479,6 +1442,7 @@
         });
         return marker;
     }
+
     // Called from listener set in setmarkers
     function movemidmarker(index) {
         var newpos = markers[index].getPosition();
@@ -1488,7 +1452,6 @@
                     newpos.lat() - (0.5 * (newpos.lat() - prevpos.lat())),
                     newpos.lng() - (0.5 * (newpos.lng() - prevpos.lng()))
             ));
-            //prevpos = null;
         }
         if (index != markers.length - 1) {
             var nextpos = markers[index+1].getPosition();
@@ -1496,11 +1459,9 @@
                     newpos.lat() - (0.5 * (newpos.lat() - nextpos.lat())),
                     newpos.lng() - (0.5 * (newpos.lng() - nextpos.lng()))
             ));
-            //nextpos = null;
         }
-        //newpos = null;
-        //index = null;
     }
+
     // Called from listener set in setmarkers
     function removemidmarker(index) {
         if (markers.length > 0) {//clicked marker has already been deleted
@@ -1521,6 +1482,7 @@
             ));
         }
     }
+
     function showKML() {
         if(codeID != 1) {
             codeID = gob('codechoice').value = 1; // set KML
@@ -1532,6 +1494,7 @@
         }
         gob('coords1').value += kmlend();
     }
+
     function showAddress(address) {
         geocoder.geocode({'address': address}, function(results, status) {
             if (status == google.maps.GeocoderStatus.OK) {
@@ -1550,16 +1513,20 @@
             }
         });
     }
+
     function activateDirections() {
         directionsYes = 1;
         directionsintroduction();
     }
+
     function closethis(name){
         gob(name).style.visibility = 'hidden';
     }
+
     function showthis(name){
         gob(name).style.visibility = 'visible';
     }
+
     function docudetails(){
         if(directionsYes == 1) {
             if(dirline == null) dirline = plmcur;
@@ -1589,6 +1556,7 @@
             showthis('toppers');
         }
     }
+
     function savedocudetails(){
         if(directionsYes == 1) {
             placemarks[dirline].name = gob("dirplm1").value;
@@ -1616,15 +1584,18 @@
             if(placemarks[plmcur].poly == "pg") logCode2();
         }
     }
+
     function mapzoom(){
         var mapZoom = map.getZoom();
         gob("myzoom").value = mapZoom;
     }
+
     function mapcenter(){
         var mapCenter = map.getCenter();
         var latLngStr = mapCenter.lat().toFixed(6) + ', ' + mapCenter.lng().toFixed(6);
         gob("centerofmap").value = latLngStr;
     }
+
     function showCodeintextarea(){
         if (notext === false){
             gob("presentcode").checked = false;
@@ -1663,6 +1634,7 @@
             }
         }
     }
+
     // the copy part may not work with all web browsers
     function copyTextarea(){
         gob('coords1').focus();
@@ -1670,11 +1642,13 @@
         copiedTxt = document.selection.createRange();
         copiedTxt.execCommand("Copy");
     }
+
     function color_html2kml(color){
         var newcolor ="FFFFFF";
         if(color.length == 7) newcolor = color.substring(5,7)+color.substring(3,5)+color.substring(1,3);
         return newcolor;
     }
+
     function color_hex2dec(color) {
         var deccolor = "255,0,0";
         var dec1 = parseInt(color.substring(1,3),16);
@@ -1683,6 +1657,7 @@
         if(color.length == 7) deccolor = dec1+','+dec2+','+dec3;
         return deccolor;
     }
+
     function getopacityhex(opa){
         var hexopa = "66";
         if(opa == 0) hexopa = "00";
@@ -1700,15 +1675,18 @@
         if(opa == 1) hexopa = "FF";
         return hexopa;
     }
+
     function iconoptions(chosenicon) {
         gob("st2").value = chosenicon;
         gob("currenticon").innerHTML = '<img src="'+chosenicon+'" alt="" />';
     }
+
     // Called from button 'Style Options'
     function styleprep() {
         if(gob('toolchoice').value == 6) toolID = 6;
         styleoptions();
     }
+
     // Called from styleprep, stepstyles and links in div directionstyles
     // If coming from directionstyles, toolID=6 has been changed to 1 or 5
     function styleoptions(){ //present current style in ..options
@@ -1758,6 +1736,7 @@
             showthis('directionstyles');
         }
     }
+
     // Called from links in polylineoptions. If Directionsmode, toolID will be changed back to 6
     function polylinestyle(e){ //save style
         if(e == 1) {
@@ -1804,6 +1783,7 @@
             alert("SAVED!");
         }
     }
+
     function polygonstyle(e) {
         if(e == 1) {
             createpolygonstyleobject();
@@ -1884,6 +1864,7 @@
             alert("SAVED!");
         }
     }
+
     function markerstyle(e) {
         if(e == 1) {
             createmarkerstyleobject();
@@ -1914,6 +1895,7 @@
             alert("SAVED!");
         }
     }
+
     function stepstyles(a) {
         if(directionsYes == 1) {
             if(gob('polylineoptions').style.visibility == 'visible') {
@@ -2046,6 +2028,7 @@
             }
         }
     }
+
     function kmlheading() {
         var heading = "";
         var styleforpolygon = "";
@@ -2075,10 +2058,12 @@
         }
         return heading+styleforpolygon+styleforpolyline+styleformarker;
     }
+
     function kmlend() {
         var ending;
         return ending = '</Document>\n</kml>';
     }
+
     // write kml for polyline in text area
     function logCode1(){
         if (notext === true) return;
@@ -2098,6 +2083,7 @@
         placemarks[plmcur].kmlcode = pointsArrayKml;
         gob('coords1').value = kmlheading()+kmltext1+code+kmltext2+kmlend();
     }
+
     // write kml for Directions in text area
     function logCode1a(){
         if (notext === true) return;
@@ -2140,6 +2126,7 @@
         //placemarks[dirline].plmtext = kmlcode = kmltext1+code+kmltext2+kmlMarkers;
         gob('coords1').value += kmlend();
     }
+
     // write kml for polygon in text area
     function logCode2(){
         if (notext === true) return;
@@ -2163,6 +2150,7 @@
         placemarks[plmcur].poly = "pg";
         gob('coords1').value = kmlheading()+kmltext1+code+kmltext2+kmlend();
     }
+
     // write kml for polygon with hole
     function logCode3(){
         if (notext === true) return;
@@ -2196,6 +2184,7 @@
         placemarks[plmcur].plmtext = kmlcode = kmltext;
         gob('coords1').value = kmlheading()+kmltext+kmlend();
     }
+
     // write javascript
     function logCode4(){
         if (notext === true) return;
@@ -2237,6 +2226,7 @@
         }
         javacode = gob('coords1').value;
     }
+
     // write javascript for polygon with hole
     function logCode5() {
         if (notext === true) return;
@@ -2278,6 +2268,7 @@
         placemarks[plmcur].poly = "pgh";
         javacode = gob('coords1').value;
     }
+
     // write javascript or kml for rectangle
     function logCode6() {
         if (notext === true) return;
@@ -2331,9 +2322,10 @@
             gob('coords1').value = kmlheading()+kmltext+kmlend();
         }
     }
-    function logCode7() { // javascript for circle
+
+    // javascript for circle
+    function logCode7() {
         if (notext === true) return;
-        //placemarks[plmcur].style = circlestyles[ccur].name;
         gob('coords1').value = 'var circle = new google.maps.Circle({\n'
                 +'map: map,\n'
                 +'center: new google.maps.LatLng('+centerPoint.lat().toFixed(6)+','+centerPoint.lng().toFixed(6)+'),\n'
@@ -2346,7 +2338,9 @@
         gob('coords1').value += 'circle.setRadius('+calc+');\n';
         javacode = gob('coords1').value;
     }
-    function logCode8(){ //javascript for Marker
+
+    //javascript for Marker
+    function logCode8(){
         if(notext === true) return;
         var text = 'var image = \''+markerstyles[mcur].icon+'\';\n'
                 +'var marker = new google.maps.Marker({\n'
@@ -2359,7 +2353,9 @@
         gob('coords1').value = text;
         javacode = gob('coords1').value;
     }
-    function logCode9() { //KML for marker
+
+    //KML for marker
+    function logCode9() {
         if(notext === true) return;
         gob('coords1').value = "";
         var kmlMarkers = "";
@@ -2383,11 +2379,13 @@
                 +'If after, click on the shape you want to edit.\n'
                 +'Click "Next shape" before each edit.';
     }
+
     function markerintroduction() {
         gob('coords1').value = 'Ready for Marker. Click on the map, or enter an address and click "Search", to place a marker.\n'
                 +'You may enter your content for the infowindow with "KML input" even if your code choice is Javascript.\n'
                 +'Click "Next shape" before each additional marker.';
     }
+
     function polylineintroduction() {
         gob('coords1').value = 'Ready for Polyline. Click on the map. The code for the shape you create will be presented here.\n\n'
                 +'When finished with a shape, click Next shape and draw another shape, if you wish.\n'
@@ -2395,6 +2393,7 @@
                 +'When editing, you may remove a point with a click on it.\n'
                 +'\nThe complete KML code for what you have created, is always available with Show KML.';
     }
+
     function polygonintroduction() {
         gob('coords1').value = 'Ready for Polygon. Click on the map. The code for the shape you create will be presented here. '
                 +'The Maps API will automatically "close" any polygons by drawing a stroke connecting the last coordinate back to the '
@@ -2405,6 +2404,7 @@
                 +'When editing, you may remove a point with a click on it.\n'
                 +'\nThe complete KML code for what you have created, is always available with Show KML.';
     }
+
     function rectangleintroduction() {
         gob('coords1').value = 'Ready for Rectangle. Click two times on the map - first for the southwest and '+
                 'then for the northeast corner. You may resize and move '+
@@ -2413,12 +2413,12 @@
                 'polyline is presented here in the text area.\n'+
                 'If you want to resize a saved rectangle, click on it.';
     }
+
     function circleintroduction() {
         gob('coords1').value = 'Ready for Circle. Click for center. Then click for radius distance. '+
                 'You may resize and move the circle with the two draggable markers you then have.\n\n'+
                 'KML code is not available for Circle.';
     }
-    //]]>
 </script>
 
 <style type="text/css">
