@@ -275,7 +275,7 @@
         copyrightNode.style.whiteSpace = 'nowrap';
 
         var myOptions = {
-            zoom: 6,
+            zoom: 8,
             center: latlng,
             draggableCursor: 'default',
             draggingCursor: 'pointer',
@@ -312,6 +312,7 @@
         google.maps.event.addListener(map,'zoom_changed',mapzoom);
         cursorposition(map);
     }
+
     // Called by initmap, addLatLng, drawRectangle, drawCircle, drawpolywithhole
     function cursorposition(mapregion){
         google.maps.event.addListener(mapregion,'mousemove',function(point){
@@ -321,6 +322,7 @@
             gob('over').options[1].text = latLngStr6;
         });
     }
+
     function updateCopyrights() {
         if(map.getMapTypeId() == "OSM") {
             copyrightNode.innerHTML = "OSM map data @<a target=\"_blank\" href=\"http://www.openstreetmap.org/\"> OpenStreetMap</a>-contributors,<a target=\"_blank\" href=\"http://creativecommons.org/licenses/by-sa/2.0/legalcode\"> CC BY-SA</a>";
@@ -2436,6 +2438,20 @@
     p {
         padding-bottom: 8px;
     }
+    input[type="button"]{
+        color: #000000;
+        text-align: center;
+        font-size: 9pt;
+        cursor: pointer;
+        background: -moz-linear-gradient(top, #b1f9f2, #2ec2d1 48%, #72ebf3 50%, #aadfd9 52%, #b1f9f2);
+        background: -webkit-gradient(linear, center top, center bottom, from(#b1f9f2), color-stop(0.48, #5fd3df), color-stop(0.5, #72ebf3), color-stop(0.52, #aadfd9), to(#aaeaf0));
+    }
+    .btnStyle{
+        color: #000000;
+        text-align: center;
+        cursor: pointer;
+        background: -moz-linear-gradient(top, #b1f9f2, #2ec2d1 48%, #72ebf3 50%, #aadfd9 52%, #b1f9f2);
+        background: -webkit-gradient(linear, center top, center bottom, from(#b1f9f2), color-stop(0.48, #5fd3df), color-stop(0.5, #72ebf3), color-stop(0.52, #aadfd9), to(#aaeaf0));    }
     #coords1 {
         padding: 5px;
         font-weight: bold;
@@ -2452,14 +2468,14 @@
     #buttonrow {
         position: absolute;
         top: 50px;
-        left: 710px;
+        left: 750px;
         width: 505px;
         height: 80px;
     }
     #presenter {
         position: absolute;
         top: 160px;
-        left: 710px;
+        left: 750px;
         width: 523px;
         height: 413px;
         border: 2px solid #ccc;
@@ -2467,7 +2483,7 @@
     #header {
         position: absolute;
         top: 5px;
-        left: 10px;
+        left: 40px;
         width: 1020px;
         height: 40px;
         background-color: #ffffff;
@@ -2475,7 +2491,7 @@
     #map_canvas {
         position: absolute;
         top: 50px;
-        left: 0px;
+        left: 40px;
         width: 700px;
         height: 80%;
         background-color: #ffffff;
@@ -2681,9 +2697,6 @@
 
 <div id="map_canvas"></div>
 <div id="header">
-  <div id="title">
-    <h1>Google Maps API v3 Tool</h1>
-  </div>
   <div class="choice">
     <form id="tools" style="float:left;text-align:right;padding:10px 0px 0px 10px;" action="./" method="post" onsubmit="return false">
       <select id="toolchoice" name="toolchoice" style="border:1px solid #000000;" onchange="toolID=parseInt(this.options[this.selectedIndex].value);setTool();">
@@ -2713,7 +2726,7 @@
       <input type="button" onclick="mapcenter();" value="Mapcenter"/>
       <input type="text" style="width:140px; border: 1px solid #000000;" id="centerofmap" />
       Zoom level:
-      <input type="text" size="5" name="myzoom" id="myzoom" value="7" style="width:15px; border: 1px solid #000000;" />
+      <input type="text" size="5" name="myzoom" id="myzoom" value="8" style="width:15px; border: 1px solid #000000;" />
     </form>
   </div>
 </div>
@@ -2746,8 +2759,8 @@
     <input type="button" onclick="regret();" value="Regret deleted point" id="RegretButton"/>
   </div>
   <form style="margin-right:5px" action="#" onsubmit="showAddress(this.address.value); return false">
-    <input type="text" style="border: 1px solid #000000;" size="50" name="address" value="Karl Johans gate 37, 0162 Oslo, Norge" />
-    <input type="submit" value="Search" />
+    <input type="text" style="border: 1px solid #000000;" size="50" name="address" value="Carnegie Mellon Silicon Valley" />
+    <input type="submit" class="btnStyle" value="Search" />
   </form>
 </div>
 <div id="polygonstuff">
@@ -3120,11 +3133,6 @@
 
 <div id="directionsPanel" style="margin:20px;background-color:#FFEE77;"></div>
 <p></p>
-<script type="text/javascript">
-    var infolink_pid = 432173;
-    var infolink_wsid = 0;
-</script>
-<script type="text/javascript" src="http://resources.infolinks.com/js/infolinks_main.js"></script>
 
 </body>
 
